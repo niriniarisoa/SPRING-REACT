@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, Toolbar, Container ,Typography} from '@mui/material';
+import { Box, Toolbar, Container } from '@mui/material';
 import { Routes, Route } from 'react-router-dom';
 import ColocataireList from '../components/colocataire/ColocataireList';
 import AddColocataire from '../components/colocataire/AddColocataire';
 import EditColocataire from '../components/colocataire/EditColocataire';
+import HomeComponent from '../components/HomeComponent';
 
 const MainContent = () => (
   <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}>
@@ -17,10 +18,6 @@ const MainContent = () => (
       </Routes>
     </Container>
   </Box>
-);
-
-const HomeComponent = () => (
-  <Typography variant="h4">Bienvenue dans la gestion de colocation</Typography>
 );
 
 export default MainContent;
