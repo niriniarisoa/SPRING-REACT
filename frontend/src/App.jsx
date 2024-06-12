@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import ColocataireList from './components/ColocataireList';
+import ColocataireList from './components/colocataire/ColocataireList';
+
 
 function App() {
     return (
