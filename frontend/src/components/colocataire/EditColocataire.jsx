@@ -1,37 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig';
-import { Container, Typography, TextField, Button } from '@mui/material';
+import { Container, TextField, Button, Typography } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const EditColocataire = ({ id, onEdit }) => {
-    const [colocataire, setColocataire] = useState({
-        nom: '',
-        prenom: '',
-        email: '',
-        motDePasse: '',
-        dateDeNaissance: '',
-        telephone: '',
-    });
+const EditColocataire = () => {
+    const [nom, setNom] = useState('');
+    const [prenom, setPrenom] = useState('');
+    const [email, setEmail] = useState('');
+    const [motDePasse, setMotDePasse] = useState('');
+    const [dateDeNaissance, setDateDeNaissance] = useState('');
+    const [telephone, setTelephone] = useState('');
+    const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`/colocataires/${id}`)
             .then(response => {
-                setColocataire(response.data);
+                const colocataire = response.data;
+                setNom(colocataire.nom);
+                setPrenom(colocataire.prenom);
+                setEmail(colocataire.email);
+                setMotDePasse(colocataire.motDePasse);
+                setDateDeNaissance(colocataire.dateDeNaissance);
+                setTelephone(colocataire.telephone);
             })
             .catch(error => {
                 console.error("Il y a eu une erreur!", error);
             });
     }, [id]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setColocataire({ ...colocataire, [name]: value });
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put(`/colocataires/${id}`, colocataire)
+        const updatedColocataire = { nom, prenom, email, motDePasse, dateDeNaissance, telephone };
+        axios.put(`/colocataires/${id}`, updatedColocataire)
             .then(response => {
-                onEdit(response.data);
+                navigate('/colocataires');
             })
             .catch(error => {
                 console.error("Il y a eu une erreur!", error);
@@ -46,63 +49,57 @@ const EditColocataire = ({ id, onEdit }) => {
             <form onSubmit={handleSubmit}>
                 <TextField
                     label="Nom"
-                    name="nom"
-                    value={colocataire.nom}
-                    onChange={handleChange}
+                    variant="outlined"
+                    value={nom}
+                    onChange={(e) => setNom(e.target.value)}
                     fullWidth
                     margin="normal"
-                    required
                 />
                 <TextField
                     label="Prénom"
-                    name="prenom"
-                    value={colocataire.prenom}
-                    onChange={handleChange}
+                    variant="outlined"
+                    value={prenom}
+                    onChange={(e) => setPrenom(e.target.value)}
                     fullWidth
                     margin="normal"
-                    required
                 />
                 <TextField
                     label="Email"
-                    name="email"
-                    value={colocataire.email}
-                    onChange={handleChange}
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     fullWidth
                     margin="normal"
-                    required
                 />
                 <TextField
-                    label="Mot de Passe"
-                    name="motDePasse"
+                    label="Mot de passe"
                     type="password"
-                    value={colocataire.motDePasse}
-                    onChange={handleChange}
+                    variant="outlined"
+                    value={motDePasse}
+                    onChange={(e) => setMotDePasse(e.target.value)}
                     fullWidth
                     margin="normal"
-                    required
                 />
                 <TextField
                     label="Date de Naissance"
-                    name="dateDeNaissance"
                     type="date"
-                    value={colocataire.dateDeNaissance}
-                    onChange={handleChange}
+                    InputLabelProps={{ shrink: true }}
+                    variant="outlined"
+                    value={dateDeNaissance}
+                    onChange={(e) => setDateDeNaissance(e.target.value)}
                     fullWidth
                     margin="normal"
-                    InputLabelProps={{ shrink: true }}
-                    required
                 />
                 <TextField
                     label="Téléphone"
-                    name="telephone"
-                    value={colocataire.telephone}
-                    onChange={handleChange}
+                    variant="outlined"
+                    value={telephone}
+                    onChange={(e) => setTelephone(e.target.value)}
                     fullWidth
                     margin="normal"
-                    required
                 />
-                <Button variant="contained" color="primary" type="submit">
-                    Enregistrer
+                <Button type="submit" variant="contained" color="primary">
+                    Modifier
                 </Button>
             </form>
         </Container>

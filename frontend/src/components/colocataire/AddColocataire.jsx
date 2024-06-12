@@ -1,27 +1,23 @@
 import React, { useState } from 'react';
 import axios from '../../axiosConfig';
-import { Container, Typography, TextField, Button } from '@mui/material';
+import { Container, TextField, Button, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-const AddColocataire = ({ onAdd }) => {
-    const [colocataire, setColocataire] = useState({
-        nom: '',
-        prenom: '',
-        email: '',
-        motDePasse: '',
-        dateDeNaissance: '',
-        telephone: '',
-    });
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setColocataire({ ...colocataire, [name]: value });
-    };
+const AddColocataire = () => {
+    const [nom, setNom] = useState('');
+    const [prenom, setPrenom] = useState('');
+    const [email, setEmail] = useState('');
+    const [motDePasse, setMotDePasse] = useState('');
+    const [dateDeNaissance, setDateDeNaissance] = useState('');
+    const [telephone, setTelephone] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('/colocataires', colocataire)
+        const newColocataire = { nom, prenom, email, motDePasse, dateDeNaissance, telephone };
+        axios.post('/colocataires', newColocataire)
             .then(response => {
-                onAdd(response.data);
+                navigate('/colocataires');
             })
             .catch(error => {
                 console.error("Il y a eu une erreur!", error);
@@ -36,62 +32,56 @@ const AddColocataire = ({ onAdd }) => {
             <form onSubmit={handleSubmit}>
                 <TextField
                     label="Nom"
-                    name="nom"
-                    value={colocataire.nom}
-                    onChange={handleChange}
+                    variant="outlined"
+                    value={nom}
+                    onChange={(e) => setNom(e.target.value)}
                     fullWidth
                     margin="normal"
-                    required
                 />
                 <TextField
                     label="Prénom"
-                    name="prenom"
-                    value={colocataire.prenom}
-                    onChange={handleChange}
+                    variant="outlined"
+                    value={prenom}
+                    onChange={(e) => setPrenom(e.target.value)}
                     fullWidth
                     margin="normal"
-                    required
                 />
                 <TextField
                     label="Email"
-                    name="email"
-                    value={colocataire.email}
-                    onChange={handleChange}
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     fullWidth
                     margin="normal"
-                    required
                 />
                 <TextField
-                    label="Mot de Passe"
-                    name="motDePasse"
+                    label="Mot de passe"
                     type="password"
-                    value={colocataire.motDePasse}
-                    onChange={handleChange}
+                    variant="outlined"
+                    value={motDePasse}
+                    onChange={(e) => setMotDePasse(e.target.value)}
                     fullWidth
                     margin="normal"
-                    required
                 />
                 <TextField
                     label="Date de Naissance"
-                    name="dateDeNaissance"
                     type="date"
-                    value={colocataire.dateDeNaissance}
-                    onChange={handleChange}
+                    InputLabelProps={{ shrink: true }}
+                    variant="outlined"
+                    value={dateDeNaissance}
+                    onChange={(e) => setDateDeNaissance(e.target.value)}
                     fullWidth
                     margin="normal"
-                    InputLabelProps={{ shrink: true }}
-                    required
                 />
                 <TextField
                     label="Téléphone"
-                    name="telephone"
-                    value={colocataire.telephone}
-                    onChange={handleChange}
+                    variant="outlined"
+                    value={telephone}
+                    onChange={(e) => setTelephone(e.target.value)}
                     fullWidth
                     margin="normal"
-                    required
                 />
-                <Button variant="contained" color="primary" type="submit">
+                <Button type="submit" variant="contained" color="primary">
                     Ajouter
                 </Button>
             </form>
