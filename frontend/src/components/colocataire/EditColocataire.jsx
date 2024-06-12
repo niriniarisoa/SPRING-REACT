@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../axiosConfig';
-import { Container, TextField, Button, Typography } from '@mui/material';
+import { Container, TextField, Button, Typography, Alert } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const EditColocataire = () => {
@@ -10,8 +10,9 @@ const EditColocataire = () => {
     const [motDePasse, setMotDePasse] = useState('');
     const [dateDeNaissance, setDateDeNaissance] = useState('');
     const [telephone, setTelephone] = useState('');
-    const { id } = useParams();
+    const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { id } = useParams();
 
     useEffect(() => {
         axios.get(`/colocataires/${id}`)
@@ -31,21 +32,51 @@ const EditColocataire = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // Validation
+        if (!nom || !prenom || !email || !motDePasse || !dateDeNaissance || !telephone) {
+            setError('Tous les champs sont obligatoires.');
+            return;
+        }
+
+        if (/\d/.test(nom)) {
+            setError('Le nom ne peut pas contenir de chiffres.');
+            return;
+        }
+
+        if (/\d/.test(prenom)) {
+            setError('Le prénom ne peut pas contenir de chiffres.');
+            return;
+        }
+
+        if (!/^\d{10}$/.test(telephone)) {
+            setError('Le téléphone doit contenir exactement 10 chiffres.');
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError('L\'adresse email est invalide.');
+            return;
+        }
+
         const updatedColocataire = { nom, prenom, email, motDePasse, dateDeNaissance, telephone };
+
         axios.put(`/colocataires/${id}`, updatedColocataire)
             .then(response => {
                 navigate('/colocataires');
             })
             .catch(error => {
                 console.error("Il y a eu une erreur!", error);
+                setError('Il y a eu une erreur lors de la modification du colocataire.');
             });
     };
 
     return (
         <Container>
             <Typography variant="h4" component="h1" gutterBottom>
-                Modifier le Colocataire
+                Modifier un Colocataire
             </Typography>
+            {error && <Alert severity="error">{error}</Alert>}
             <form onSubmit={handleSubmit}>
                 <TextField
                     label="Nom"
