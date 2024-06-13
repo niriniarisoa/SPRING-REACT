@@ -1,0 +1,21 @@
+/* MainContent.css */
+
+.drawer {
+    background-color: var(--primary-color);
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+  }
+  
+  .nav-link:hover {
+    background-color: var(--hover-color);
+  }
+  
+  .nav-link.active {
+    background-color: var(--active-color);
+  }
+  

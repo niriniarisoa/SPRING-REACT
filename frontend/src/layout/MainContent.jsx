@@ -11,6 +11,7 @@ import EditDepense from '../components/depense/EditDepense';
 import TacheListe from '../components/tache/TacheListe';
 import AddTache from '../components/tache/AddTache';
 import EditTache from '../components/tache/EditTache';
+import './MainContent.css'; 
 
 const MainContent = () => (
   <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}>

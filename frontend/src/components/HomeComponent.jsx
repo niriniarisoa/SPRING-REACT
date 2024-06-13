@@ -29,7 +29,7 @@ const HomeComponent = () => {
         setTotalDepenses(total);
 
         // Calculer les dépenses par mois
-        const depensesParMois = Array(12).fill(0); // Initialiser un tableau pour les 12 mois
+        const depensesParMois = Array(12).fill(0); 
         response.data.forEach(depense => {
           const mois = new Date(depense.date).getMonth();
           depensesParMois[mois] += depense.montant;
