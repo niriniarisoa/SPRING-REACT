@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Typography, Container, Card, CardContent, Grid } from '@mui/material';
 import axios from '../axiosConfig';
+import { Bar } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 const HomeComponent = () => {
   const [colocatairesCount, setColocatairesCount] = useState(0);
   const [totalDepenses, setTotalDepenses] = useState(0);
   const [tachesAujourdhuiCount, setTachesAujourdhuiCount] = useState(0);
+  const [depensesParMois, setDepensesParMois] = useState([]);
 
   useEffect(() => {
-    // Fonction pour récupérer le nombre de colocataires
     const fetchColocatairesCount = async () => {
       try {
         const response = await axios.get('/colocataires');
@@ -18,23 +22,26 @@ const HomeComponent = () => {
       }
     };
 
-    // Fonction pour calculer le total des dépenses
     const calculateTotalDepenses = async () => {
       try {
         const response = await axios.get('/depenses');
-        console.log('Data from /depenses:', response.data); // Vérifiez les données reçues depuis l'API
         const total = response.data.reduce((acc, depense) => acc + depense.montant, 0);
-        console.log('Total calculated:', total); // Vérifiez le total calculé
         setTotalDepenses(total);
+
+        // Calculer les dépenses par mois
+        const depensesParMois = Array(12).fill(0); // Initialiser un tableau pour les 12 mois
+        response.data.forEach(depense => {
+          const mois = new Date(depense.date).getMonth();
+          depensesParMois[mois] += depense.montant;
+        });
+        setDepensesParMois(depensesParMois);
       } catch (error) {
         console.error('Erreur lors du calcul du total des dépenses :', error);
       }
     };
 
-    // Fonction pour récupérer le nombre de tâches à faire aujourd'hui
     const fetchTachesAujourdhuiCount = async () => {
       try {
-        // Remplacer par la logique pour récupérer le nombre de tâches à faire aujourd'hui
         const response = await axios.get('/taches', { params: { date: new Date().toISOString().split('T')[0] } });
         setTachesAujourdhuiCount(response.data.length);
       } catch (error) {
@@ -42,11 +49,24 @@ const HomeComponent = () => {
       }
     };
 
-    // Appel des fonctions d'initialisation
     fetchColocatairesCount();
     calculateTotalDepenses();
     fetchTachesAujourdhuiCount();
   }, []);
+
+  // Données pour le graphique des dépenses par mois
+  const data = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    datasets: [
+      {
+        label: 'Dépenses par mois',
+        data: depensesParMois,
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
 
   return (
     <Container>
@@ -87,6 +107,16 @@ const HomeComponent = () => {
               <Typography variant="h4">
                 {tachesAujourdhuiCount}
               </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Dépenses par mois
+              </Typography>
+              <Bar data={data} />
             </CardContent>
           </Card>
         </Grid>
