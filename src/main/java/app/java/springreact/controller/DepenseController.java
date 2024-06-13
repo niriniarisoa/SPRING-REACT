@@ -8,7 +8,7 @@ import app.java.springreact.repository.DepenseRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/depenses")
+@RequestMapping("/api/depenses")
 public class DepenseController {
      @Autowired
     private DepenseRepository depenseRepository;
