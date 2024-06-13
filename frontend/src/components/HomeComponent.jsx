@@ -5,7 +5,7 @@ import axios from '../axiosConfig';
 const HomeComponent = () => {
   const [colocatairesCount, setColocatairesCount] = useState(0);
   const [totalDepenses, setTotalDepenses] = useState(0);
-  // const [tachesAujourdhuiCount, setTachesAujourdhuiCount] = useState(0);
+  const [tachesAujourdhuiCount, setTachesAujourdhuiCount] = useState(0);
 
   useEffect(() => {
     // Fonction pour récupérer le nombre de colocataires
@@ -30,14 +30,13 @@ const HomeComponent = () => {
         console.error('Erreur lors du calcul du total des dépenses :', error);
       }
     };
-    
 
     // Fonction pour récupérer le nombre de tâches à faire aujourd'hui
     const fetchTachesAujourdhuiCount = async () => {
       try {
         // Remplacer par la logique pour récupérer le nombre de tâches à faire aujourd'hui
-        // const response = await axios.get('/taches', { params: { date: new Date().toISOString() } });
-        // setTachesAujourdhuiCount(response.data.length);
+        const response = await axios.get('/taches', { params: { date: new Date().toISOString().split('T')[0] } });
+        setTachesAujourdhuiCount(response.data.length);
       } catch (error) {
         console.error('Erreur lors de la récupération des tâches à faire aujourd\'hui :', error);
       }
@@ -86,7 +85,7 @@ const HomeComponent = () => {
                 Tâches aujourd'hui
               </Typography>
               <Typography variant="h4">
-                {/* {tachesAujourdhuiCount} */}9
+                {tachesAujourdhuiCount}
               </Typography>
             </CardContent>
           </Card>

@@ -8,7 +8,7 @@ import app.java.springreact.repository.TacheRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/taches")
+@RequestMapping("/api/taches")
 public class TacheController {
      @Autowired
     private TacheRepository tacheRepository;

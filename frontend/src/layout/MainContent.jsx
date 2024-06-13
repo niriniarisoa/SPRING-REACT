@@ -8,6 +8,9 @@ import HomeComponent from '../components/HomeComponent';
 import DepenseList from '../components/depense/DepenseList';
 import AddDepense from '../components/depense/AddDepense';
 import EditDepense from '../components/depense/EditDepense';
+import TacheListe from '../components/tache/TacheListe';
+import AddTache from '../components/tache/AddTache';
+import EditTache from '../components/tache/EditTache';
 
 const MainContent = () => (
   <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}>
@@ -21,6 +24,9 @@ const MainContent = () => (
         <Route path="/depense" element={<DepenseList />} />
         <Route path="/depense/add" element={<AddDepense />} />
         <Route path="/depense/edit/:id" element={<EditDepense />} />
+        <Route path="/tache" element={<TacheListe />} />
+        <Route path="/tache/add" element={<AddTache />} />
+        <Route path="/tache/edit/:id" element={<EditTache />} />
       </Routes>
     </Container>
   </Box>

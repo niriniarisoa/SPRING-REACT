@@ -1,6 +1,6 @@
 import React from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar } from '@mui/material';
-import { Home, People, ListAlt, AttachMoney, Add } from '@mui/icons-material';
+import { Home, People, ListAlt, AttachMoney, Add, Assignment } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -17,25 +17,33 @@ const DrawerComponent = () => (
     <Toolbar />
     <Box sx={{ overflow: 'auto' }}>
       <List>
-        <ListItem component={Link} to="/">
+        <ListItem button component={Link} to="/">
           <ListItemIcon><Home /></ListItemIcon>
           <ListItemText primary="Accueil" />
         </ListItem>
-        <ListItem component={Link} to="/colocataires">
+        <ListItem button component={Link} to="/colocataires">
           <ListItemIcon><People /></ListItemIcon>
           <ListItemText primary="Colocataires" />
         </ListItem>
-        <ListItem component={Link} to="colocataires/add">
-          <ListItemIcon><ListAlt /></ListItemIcon>
+        <ListItem button component={Link} to="/colocataires/add">
+          <ListItemIcon><Add /></ListItemIcon>
           <ListItemText primary="Ajouter Colocataire" />
         </ListItem>
-        <ListItem component={Link} to="/depense">
+        <ListItem button component={Link} to="/depense">
           <ListItemIcon><AttachMoney /></ListItemIcon>
-          <ListItemText primary="Dépense" />
+          <ListItemText primary="Dépenses" />
         </ListItem>
-        <ListItem component={Link} to="/depense/add">
+        <ListItem button component={Link} to="/depense/add">
           <ListItemIcon><Add /></ListItemIcon>
           <ListItemText primary="Ajouter Dépense" />
+        </ListItem>
+        <ListItem button component={Link} to="/tache">
+          <ListItemIcon><Assignment /></ListItemIcon>
+          <ListItemText primary="Tâches" />
+        </ListItem>
+        <ListItem button component={Link} to="/tache/add">
+          <ListItemIcon><ListAlt /></ListItemIcon>
+          <ListItemText primary="Ajouter Tâche" />
         </ListItem>
       </List>
     </Box>
